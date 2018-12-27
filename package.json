@@ -1,0 +1,24 @@
+{
+  "name": "react-overrides",
+  "version": "0.0.1",
+  "description": "Helper for create reusable components through Overrides Pattern",
+  "main": "./dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lessmess-agency/react-overrides.git"
+  },
+  "keywords": [
+    "react",
+    "components",
+    "overrides"
+  ],
+  "author": "Ilya Lesik",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lessmess-agency/react-overrides/issues"
+  },
+  "homepage": "https://github.com/lessmess-agency/react-overrides#readme"
+}
