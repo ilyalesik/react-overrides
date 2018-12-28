@@ -1,11 +1,34 @@
 {
   "name": "react-overrides",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Helper for create reusable components through Overrides Pattern",
   "main": "./dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "flow": "flow",
+    "flow:check": "flow check",
+    "test": "jest",
+    "prettier": "prettier \"*/**/*.js\" --ignore-path ./.prettierignore --write && git add . && git status",
+    "build": "npm run build:clean && npm run build:lib && npm run build:flow",
+    "build:clean": "rimraf dist",
+    "build:lib": "cross-env BABEL_ENV=production babel src --out-dir dist --ignore '**/__tests__/**'",
+    "build:flow": "flow-copy-source -v -i '**/__tests__/**' src dist",
+    "prepublish": "npm run flow:check && npm run test && npm run build"
   },
+  "jest": {
+    "setupTestFrameworkScriptFile": "./setupTests.js",
+    "moduleNameMapper": {
+      "\\.(svg|png)$": "<rootDir>/__mocks__/fileMock.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "pre-commit": [
+    "prettier",
+    "flow:check",
+    "test"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lessmess-agency/react-overrides.git"
@@ -20,5 +43,27 @@
   "bugs": {
     "url": "https://github.com/lessmess-agency/react-overrides/issues"
   },
-  "homepage": "https://github.com/lessmess-agency/react-overrides#readme"
+  "homepage": "https://github.com/lessmess-agency/react-overrides#readme",
+  "peerDependencies": {
+    "react": ">=16.6.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "@babel/preset-flow": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "cross-env": "^5.2.0",
+    "flow-bin": "^0.89.0",
+    "flow-copy-source": "^2.0.2",
+    "jest": "^23.6.0",
+    "pre-commit": "^1.2.2",
+    "prettier": "^1.15.3",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
+    "react-test-renderer": "^16.7.0",
+    "rimraf": "^2.6.2"
+  }
 }
