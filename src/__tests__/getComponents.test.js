@@ -3,6 +3,23 @@ import renderer from "react-test-renderer";
 import { getComponents } from "../getComponents";
 
 describe("getComponents", () => {
+    it("empty overrides", () => {
+        const Component = props => {
+            const {
+                PassedComponent: { component: PassedComponent }
+            } = getComponents({
+                PassedComponent: () => <div />
+            });
+
+            return <PassedComponent />;
+        };
+
+        const componentRender = renderer.create(<Component />);
+        const componentInstance = componentRender.root;
+
+        expect(componentInstance.findAllByType("div").length).toBe(1);
+    });
+
     it("override component", () => {
         const Component = props => {
             const {
@@ -25,6 +42,7 @@ describe("getComponents", () => {
         const componentInstance = componentRender.root;
 
         expect(componentInstance.findAllByType(PassedComponent).length).toBe(1);
+        expect(componentInstance.findAllByType("button").length).toBe(1);
     });
 
     it("override props", () => {
