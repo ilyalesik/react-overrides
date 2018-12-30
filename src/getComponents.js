@@ -9,12 +9,14 @@ export function getComponents<T>(
     defaultComponents: { [T]: React.ComponentType<any> },
     overrides: TOverridesType<T>
 ): { [T]: { component: React.ComponentType<any>, props?: { string: mixed } } } {
-    return Object.keys(defaultComponents).reduce((acc, name) => {
+    return Object.keys(defaultComponents).reduce((components, name) => {
         const override = overrides[name] || {};
-        acc[name] = {
-            component: override.component || defaultComponents[name],
-            props: { $style: override.style, ...override.props }
+        return {
+            ...components,
+            [name]: {
+                component: override.component || defaultComponents[name],
+                props: { ...override.props }
+            }
         };
-        return acc;
     }, {});
 }
