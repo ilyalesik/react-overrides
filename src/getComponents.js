@@ -7,7 +7,7 @@ export type TOverridesType<T> = {
 
 export function getComponents<T>(
     defaultComponents: { [T]: React.ComponentType<any> },
-    overrides: ?TOverridesType<T>
+    overrides?: TOverridesType<T>
 ): { [T]: { component: React.ComponentType<any>, props?: { string: mixed } } } {
     return Object.keys(defaultComponents).reduce((components, name) => {
         const override = (overrides && overrides[name]) || {};
