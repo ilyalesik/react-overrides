@@ -1,6 +1,6 @@
 {
   "name": "react-overrides",
-  "version": "0.1.6",
+  "version": "0.2.0",
   "description": "Helper for create reusable components through Overrides Pattern",
   "main": "./dist/index.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "build": "npm run build:clean && npm run build:lib && npm run build:flow",
     "build:clean": "rimraf dist",
     "build:lib": "cross-env BABEL_ENV=production babel src --out-dir dist --ignore '**/__tests__/**'",
-    "build:flow": "flow-copy-source -v -i '**/__tests__/**' src dist",
+    "build:flow": "gen-flow-files src --out-dir dist",
     "prepublish": "npm run flow:check && npm run test && npm run build"
   },
   "jest": {
@@ -57,7 +57,7 @@
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "cross-env": "^5.2.0",
     "flow-bin": "^0.89.0",
-    "flow-copy-source": "^2.0.2",
+    "gen-flow-files": "^0.3.0",
     "jest": "^23.6.0",
     "pre-commit": "^1.2.2",
     "prettier": "^1.15.3",
