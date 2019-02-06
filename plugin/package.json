@@ -4,12 +4,18 @@
   "description": "Babel plugin for react-overrides",
   "main": "./dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm run build:clean && npm run build:lib",
+    "build:clean": "rimraf dist",
+    "build:lib": "cross-env BABEL_ENV=production babel src --out-dir dist --ignore '**/__tests__/**'",
+    "prepublish": "npm run build"
   },
   "keywords": [
     "react",
     "babel"
   ],
   "author": "Ilya Lesik <ilialesik@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@babel/helper-plugin-utils": "^7.0.0"
+  }
 }
