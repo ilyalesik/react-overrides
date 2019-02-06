@@ -1,0 +1,15 @@
+{
+  "name": "babel-plugin-react-overrides",
+  "version": "0.0.1",
+  "description": "Babel plugin for react-overrides",
+  "main": "./dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "react",
+    "babel"
+  ],
+  "author": "Ilya Lesik <ilialesik@gmail.com>",
+  "license": "MIT"
+}
