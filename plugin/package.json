@@ -7,6 +7,7 @@
     "build": "npm run build:clean && npm run build:lib",
     "build:clean": "rimraf dist",
     "build:lib": "cross-env BABEL_ENV=production babel src --out-dir dist --ignore '**/__tests__/**'",
+    "test": "jest",
     "prepublish": "npm run build"
   },
   "keywords": [
@@ -16,6 +17,25 @@
   "author": "Ilya Lesik <ilialesik@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@babel/helper-plugin-utils": "^7.0.0"
+    "@babel/core": "^7.2.2",
+    "@babel/helper-plugin-utils": "^7.0.0",
+    "@babel/preset-env": "^7.3.1",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/types": "^7.3.2",
+    "babel-test": "^0.1.2",
+    "jest-file-snapshot": "^0.3.2"
+  },
+  "devDependencies": {
+    "@babel/helper-plugin-test-runner": "^7.1.0",
+    "babel-core": "^7.0.0-bridge.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "snapshotSerializers": [
+      "<rootDir>/test/whitespaceTrimmingSerializer.js"
+    ],
+    "watchPathIgnorePatterns": [
+      "fixtures\\/[^/]+\\/(output|error)\\.js"
+    ]
   }
 }
