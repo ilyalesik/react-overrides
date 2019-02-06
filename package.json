@@ -1,6 +1,6 @@
 {
   "name": "react-overrides",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Helper for create reusable components through Overrides Pattern",
   "main": "./dist/index.js",
   "scripts": {
@@ -31,7 +31,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lessmess-agency/react-overrides.git"
+    "url": "git+https://github.com/lm-a/react-overrides.git"
   },
   "keywords": [
     "react",
