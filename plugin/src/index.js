@@ -1,4 +1,5 @@
 import { declare } from "@babel/helper-plugin-utils";
+import { generateMemberExpression } from "./memberExpressionGenerator";
 const t = require("@babel/types");
 
 export default declare((api, options, dirname) => {
@@ -27,13 +28,12 @@ export default declare((api, options, dirname) => {
                 ) {
                     return;
                 }
-                const propsMemberExpression = t.memberExpression(
-                    t.memberExpression(
-                        t.memberExpression(t.identifier("props"), t.identifier("overrides")),
-                        t.identifier(path.parentPath.parentPath.node.name.name)
-                    ),
-                    t.identifier("props")
-                );
+                const propsMemberExpression = generateMemberExpression([
+                    "props",
+                    "overrides",
+                    path.parentPath.parentPath.node.name.name,
+                    "props"
+                ]);
                 path.replaceWith(propsMemberExpression);
             }
         }
