@@ -1,6 +1,6 @@
 {
   "name": "react-overrides",
-  "version": "1.0.0-alpha0",
+  "version": "1.0.1",
   "description": "Helper for create reusable components through Overrides Pattern",
   "main": "./dist/index.js",
   "scripts": {

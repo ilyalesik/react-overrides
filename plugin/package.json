@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-react-overrides",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "description": "Babel plugin for react-overrides",
   "main": "./dist/index.js",
   "scripts": {

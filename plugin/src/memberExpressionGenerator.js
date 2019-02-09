@@ -9,7 +9,7 @@ export const generateMemberExpression = items => {
     );
 };
 
-export const generateSafetyMemberExpression = items => {
+export const generateSafetyMemberExpression = (items, fallbackValue = t.objectExpression([])) => {
     const checkTypeofVariable = t.binaryExpression(
         "!==",
         t.unaryExpression("typeof", t.identifier(items[0]), true),
@@ -30,6 +30,6 @@ export const generateSafetyMemberExpression = items => {
     return t.logicalExpression(
         "||",
         t.logicalExpression("&&", checkTypeofVariable, _toCheckUndefinedMemberLogicalExpression(items)),
-        t.objectExpression([])
+        fallbackValue
     );
 };
