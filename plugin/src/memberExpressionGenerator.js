@@ -8,3 +8,28 @@ export const generateMemberExpression = items => {
         t.identifier(lastItem)
     );
 };
+
+export const generateSafetyMemberExpression = items => {
+    const checkTypeofVariable = t.binaryExpression(
+        "!==",
+        t.unaryExpression("typeof", t.identifier(items[0]), true),
+        t.stringLiteral("undefined")
+    );
+
+    const _toCheckUndefinedMemberLogicalExpression = items => {
+        if (items.length === 2) {
+            return generateMemberExpression(items);
+        }
+        return t.logicalExpression(
+            "&&",
+            _toCheckUndefinedMemberLogicalExpression(items.slice(0, items.length - 1)),
+            generateMemberExpression(items)
+        );
+    };
+
+    return t.logicalExpression(
+        "||",
+        t.logicalExpression("&&", checkTypeofVariable, _toCheckUndefinedMemberLogicalExpression(items)),
+        t.objectExpression([])
+    );
+};

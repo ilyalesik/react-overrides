@@ -1,5 +1,5 @@
 import { declare } from "@babel/helper-plugin-utils";
-import { generateMemberExpression } from "./memberExpressionGenerator";
+import { generateMemberExpression, generateSafetyMemberExpression } from "./memberExpressionGenerator";
 const t = require("@babel/types");
 
 export default declare((api, options, dirname) => {
@@ -28,7 +28,7 @@ export default declare((api, options, dirname) => {
                 ) {
                     return;
                 }
-                const propsMemberExpression = generateMemberExpression([
+                const propsMemberExpression = generateSafetyMemberExpression([
                     "props",
                     "overrides",
                     path.parentPath.parentPath.node.name.name,
