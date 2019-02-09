@@ -8,7 +8,7 @@
     "build:clean": "rimraf dist",
     "build:lib": "cross-env BABEL_ENV=production babel src --out-dir dist --ignore '**/__tests__/**'",
     "test": "jest",
-    "prepublish": "npm run build"
+    "prepublish": "npm run test && npm run build"
   },
   "keywords": [
     "react",
