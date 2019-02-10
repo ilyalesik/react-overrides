@@ -1,5 +1,5 @@
 import { declare } from "@babel/helper-plugin-utils";
-import { generateMemberExpression, generateSafetyMemberExpression } from "./memberExpressionGenerator";
+import { generateSafetyMemberExpression } from "./memberExpressionGenerator";
 import { findParent } from "./findParent";
 const t = require("@babel/types");
 
@@ -22,16 +22,16 @@ export default declare((api, options, dirname) => {
                 reactOverridesImportName = defaultSpecifier.local.name;
             },
             Identifier: path => {
-                if (
-                    !reactOverridesImportName ||
-                    path.node.name !== reactOverridesImportName ||
-                    !t.isJSXSpreadAttribute(path.parentPath)
-                ) {
+                if (!reactOverridesImportName || path.node.name !== reactOverridesImportName) {
                     return;
                 }
-                const openingElement = path.parentPath.parentPath;
-                const jsxElement = path.parentPath.parentPath.parentPath;
-                const ComponentName = openingElement.node.name.name;
+
+                const jsxElement = findParent(path, path => t.isJSXElement(path));
+                if (!jsxElement) {
+                    return;
+                }
+                const openingElement = jsxElement.node.openingElement;
+                const ComponentName = openingElement.name.name;
 
                 const propsMemberExpression = generateSafetyMemberExpression([
                     "props",
@@ -53,7 +53,7 @@ export default declare((api, options, dirname) => {
                     t.identifier(ComponentName)
                 );
                 const ComponentNameReplacement = ComponentName + "OverridesReplacement";
-                openingElement.node.name.name = ComponentNameReplacement;
+                openingElement.name.name = ComponentNameReplacement;
                 if (jsxElement.node.closingElement) {
                     jsxElement.node.closingElement.name.name = ComponentNameReplacement;
                 }
