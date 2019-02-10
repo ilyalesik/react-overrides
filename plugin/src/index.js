@@ -12,7 +12,7 @@ export default declare((api, options, dirname) => {
 
         visitor: {
             ImportDeclaration: path => {
-                if (!path.node.source.value === "react-overrides") {
+                if (path.node.source.value !== "react-overrides") {
                     return;
                 }
                 const defaultSpecifier = path.node.specifiers.find(specifier => t.isImportDefaultSpecifier(specifier));
@@ -20,6 +20,16 @@ export default declare((api, options, dirname) => {
                     return;
                 }
                 reactOverridesImportName = defaultSpecifier.local.name;
+                const isHaveNotDefaultSpecifier = path.node.specifiers.find(
+                    specifier => !t.isImportDefaultSpecifier(specifier)
+                );
+                if (!isHaveNotDefaultSpecifier) {
+                    path.remove();
+                } else {
+                    path.node.specifiers = path.node.specifiers.filter(
+                        specifier => !t.isImportDefaultSpecifier(specifier)
+                    );
+                }
             },
             Identifier: path => {
                 if (!reactOverridesImportName || path.node.name !== reactOverridesImportName) {

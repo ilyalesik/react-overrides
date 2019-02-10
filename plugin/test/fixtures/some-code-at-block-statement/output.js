@@ -1,5 +1,5 @@
 import React from "react";
-import o, { getComponents } from "react-overrides";
+import { getComponents } from "react-overrides";
 
 const OverridableButton = props => {
   const Container = ButtonContainer;

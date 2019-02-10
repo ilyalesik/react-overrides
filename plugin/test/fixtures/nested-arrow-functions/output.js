@@ -1,5 +1,4 @@
 import React from "react";
-import o from "react-overrides";
 
 const Select = props => {
   const ContainerOverridesReplacement = typeof props !== "undefined" && props.overrides && props.overrides.Container && props.overrides.Container.component || Container;
