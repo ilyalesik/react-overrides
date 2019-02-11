@@ -30,7 +30,7 @@ Further, add react-overrides to your .babelrc configuration:
 
 ## Usage
 
-Create a reusable component by passing the default export 
+Create extendable component by passing the default export 
 from `react-overrides` package to the component to be extended. 
 
 *Example*:
