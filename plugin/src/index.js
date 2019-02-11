@@ -83,7 +83,7 @@ const updateOverridablePropsAndComponents = (path, componentName) => {
             t.objectProperty(
                 t.identifier(componentName),
                 generateSafetyMemberExpression(
-                    ["props", "overrides", componentName, "component"],
+                    [OVERRIDABLE_PROPS_VAR, "overrides", componentName, "component"],
                     t.identifier(componentName)
                 )
             )
