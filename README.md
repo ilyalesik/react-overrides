@@ -108,7 +108,7 @@ const Button = props => {
 };
 ```
 
-#### How it works
+## How it works
 `babel-plugin-react-overrides` transforms the code from the example into this:
 ```javascript
 import React, { useState } from "react";
@@ -139,7 +139,7 @@ export const Select = props => {
 ```
 
 
-#### Usage without babel plugin
+### Usage without babel plugin
 
 Create reusable component with *getComponents*: 
 ```javascript
