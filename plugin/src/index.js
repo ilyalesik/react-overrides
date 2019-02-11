@@ -39,11 +39,17 @@ const generateOverridablePropsVariableDeclaration = () => {
 };
 
 const updateOverridablePropsAndComponents = (path, componentName) => {
-    const arrowFunctionExpression = findHighestParent(path, path => t.isArrowFunctionExpression(path));
-    if (!t.isBlockStatement(arrowFunctionExpression.node.body)) {
-        arrowFunctionExpression.node.body = t.blockStatement([t.returnStatement(arrowFunctionExpression.node.body)]);
+    const functionExpression = findHighestParent(
+        path,
+        path => t.isArrowFunctionExpression(path) || t.isFunctionExpression(path) || t.isClassMethod(path)
+    );
+    if (!functionExpression) {
+        return;
     }
-    const blockStatement = arrowFunctionExpression.node.body;
+    if (!t.isBlockStatement(functionExpression.node.body)) {
+        functionExpression.node.body = t.blockStatement([t.returnStatement(functionExpression.node.body)]);
+    }
+    const blockStatement = functionExpression.node.body;
     const overridablePropsVariableDeclaration = blockStatement.body.find(
         expression => expression.isOverridablePropsVariableDeclaration
     );

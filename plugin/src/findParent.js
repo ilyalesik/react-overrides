@@ -10,7 +10,7 @@ export const findParent = (path, predicat) => {
 
 export const findHighestParent = (path, predicat) => {
     const result = findParent(path, predicat);
-    if (!findParent(result, predicat)) {
+    if (!result || !findParent(result, predicat)) {
         return result;
     }
     return findHighestParent(result, predicat);
