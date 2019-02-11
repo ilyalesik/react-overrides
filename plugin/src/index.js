@@ -92,63 +92,76 @@ export default declare((api, options, dirname) => {
     api.assertVersion(7);
     let reactOverridesImportName = null;
 
+    const identifierVisitor = path => {
+        if (!reactOverridesImportName || path.node.name !== reactOverridesImportName) {
+            return;
+        }
+
+        const jsxElement = findParent(path, path => t.isJSXElement(path));
+        if (!jsxElement) {
+            return;
+        }
+        const openingElement = jsxElement.node.openingElement;
+        const ComponentName = t.isJSXMemberExpression(openingElement.name)
+            ? openingElement.name.property.name
+            : openingElement.name.name;
+
+        const propsMemberExpression = generateSafetyMemberExpression([
+            "overridableProps",
+            "overrides",
+            ComponentName,
+            "props"
+        ]);
+        path.replaceWith(propsMemberExpression);
+
+        updateOverridablePropsAndComponents(path, ComponentName);
+
+        const ComponentNameReplacement = t.jsxMemberExpression(
+            t.jsxIdentifier("overridableComponents"),
+            t.jsxIdentifier(ComponentName)
+        );
+        openingElement.name = ComponentNameReplacement;
+        if (jsxElement.node.closingElement) {
+            jsxElement.node.closingElement.name = ComponentNameReplacement;
+        }
+    };
+
     return {
         name: "babel-plugin-react-overrides",
         inherits: syntaxJSX,
 
         visitor: {
-            ImportDeclaration: path => {
-                if (path.node.source.value !== "react-overrides") {
-                    return;
-                }
-                const defaultSpecifier = path.node.specifiers.find(specifier => t.isImportDefaultSpecifier(specifier));
-                if (!defaultSpecifier) {
-                    return;
-                }
-                reactOverridesImportName = defaultSpecifier.local.name;
-                const isHaveNotDefaultSpecifier = path.node.specifiers.find(
-                    specifier => !t.isImportDefaultSpecifier(specifier)
-                );
-                if (!isHaveNotDefaultSpecifier) {
-                    path.remove();
-                } else {
-                    path.node.specifiers = path.node.specifiers.filter(
-                        specifier => !t.isImportDefaultSpecifier(specifier)
-                    );
-                }
-            },
-            Identifier: path => {
-                if (!reactOverridesImportName || path.node.name !== reactOverridesImportName) {
-                    return;
-                }
-
-                const jsxElement = findParent(path, path => t.isJSXElement(path));
-                if (!jsxElement) {
-                    return;
-                }
-                const openingElement = jsxElement.node.openingElement;
-                const ComponentName = t.isJSXMemberExpression(openingElement.name)
-                    ? openingElement.name.property.name
-                    : openingElement.name.name;
-
-                const propsMemberExpression = generateSafetyMemberExpression([
-                    "overridableProps",
-                    "overrides",
-                    ComponentName,
-                    "props"
-                ]);
-                path.replaceWith(propsMemberExpression);
-
-                updateOverridablePropsAndComponents(path, ComponentName);
-
-                const ComponentNameReplacement = t.jsxMemberExpression(
-                    t.jsxIdentifier("overridableComponents"),
-                    t.jsxIdentifier(ComponentName)
-                );
-                openingElement.name = ComponentNameReplacement;
-                if (jsxElement.node.closingElement) {
-                    jsxElement.node.closingElement.name = ComponentNameReplacement;
-                }
+            Program(programPath) {
+                programPath.traverse({
+                    ImportDeclaration: path => {
+                        if (path.node.source.value !== "react-overrides") {
+                            return;
+                        }
+                        const defaultSpecifier = path.node.specifiers.find(specifier =>
+                            t.isImportDefaultSpecifier(specifier)
+                        );
+                        if (!defaultSpecifier) {
+                            return;
+                        }
+                        reactOverridesImportName = defaultSpecifier.local.name;
+                        const isHaveNotDefaultSpecifier = path.node.specifiers.find(
+                            specifier => !t.isImportDefaultSpecifier(specifier)
+                        );
+                        if (!isHaveNotDefaultSpecifier) {
+                            path.remove();
+                        } else {
+                            path.node.specifiers = path.node.specifiers.filter(
+                                specifier => !t.isImportDefaultSpecifier(specifier)
+                            );
+                        }
+                    },
+                    ClassDeclaration(classPath) {
+                        classPath.traverse({
+                            Identifier: identifierVisitor
+                        });
+                    },
+                    Identifier: identifierVisitor
+                });
             }
         }
     };
