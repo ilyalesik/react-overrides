@@ -67,10 +67,23 @@ export default declare((api, options, dirname) => {
                 if (jsxElement.node.closingElement) {
                     jsxElement.node.closingElement.name.name = ComponentNameReplacement;
                 }
-                const componentReplacementVariableDeclaration = t.variableDeclaration("const", [
+                const componentReplacementVariableDeclaration = t.variableDeclaration("var", [
                     t.variableDeclarator(t.identifier(ComponentNameReplacement), componentMemberExpression)
                 ]);
-                blockStatement.body.splice(blockStatement.body.length - 1, 0, componentReplacementVariableDeclaration);
+                const componentReplacementVariableCondition = t.binaryExpression(
+                    "===",
+                    t.unaryExpression("typeof", t.identifier(ComponentNameReplacement), true),
+                    t.stringLiteral("undefined")
+                );
+                const componentReplacementVariableDeclarationWithCheck = t.ifStatement(
+                    componentReplacementVariableCondition,
+                    componentReplacementVariableDeclaration
+                );
+                blockStatement.body.splice(
+                    blockStatement.body.length - 1,
+                    0,
+                    componentReplacementVariableDeclarationWithCheck
+                );
             }
         }
     };
