@@ -1,5 +1,6 @@
 # react-overrides
-Helper to create reusable components.
+Helper for create extendable components. 
+Intended to override the props and used components of the internal elements of the component.
 
 Inspired by article 
 [Better Reusable React Components with the Overrides Pattern](https://medium.com/@dschnr/better-reusable-react-components-with-the-overrides-pattern-9eca2339f646).
