@@ -41,7 +41,11 @@ const generateOverridablePropsVariableDeclaration = () => {
 const updateOverridablePropsAndComponents = (path, componentName) => {
     const functionExpression = findHighestParent(
         path,
-        path => t.isArrowFunctionExpression(path) || t.isFunctionExpression(path) || t.isClassMethod(path)
+        path =>
+            t.isArrowFunctionExpression(path) ||
+            t.isFunctionExpression(path) ||
+            t.isClassMethod(path) ||
+            t.isFunctionDeclaration(path)
     );
     if (!functionExpression) {
         return;
