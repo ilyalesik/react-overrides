@@ -24,7 +24,7 @@ fs.readFile(inputFile, "utf8", (err, code) => {
     babelCore.transform(
         code,
         {
-            plugins: ["@babel/plugin-syntax-jsx", plugin]
+            plugins: [plugin]
         },
         function(err, result) {
             if (err) {

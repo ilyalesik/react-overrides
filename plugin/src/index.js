@@ -2,6 +2,7 @@ import { declare } from "@babel/helper-plugin-utils";
 import { generateSafetyMemberExpression } from "./memberExpressionGenerator";
 import { findHighestParent, findParent } from "./findParent";
 const t = require("@babel/types");
+import syntaxJSX from "@babel/plugin-syntax-jsx";
 
 const generateOverridablePropsVariableDeclaration = () => {
     const variableDeclaration = t.variableDeclaration("const", [
@@ -93,6 +94,7 @@ export default declare((api, options, dirname) => {
 
     return {
         name: "babel-plugin-react-overrides",
+        inherits: syntaxJSX,
 
         visitor: {
             ImportDeclaration: path => {
