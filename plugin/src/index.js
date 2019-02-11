@@ -4,10 +4,13 @@ import { findHighestParent, findParent } from "./findParent";
 const t = require("@babel/types");
 import syntaxJSX from "@babel/plugin-syntax-jsx";
 
+const OVERRIDABLE_PROPS_VAR = "overridableProps";
+const OVERRIDABLE_COMPONENTS_VAR = "overridableComponents";
+
 const generateOverridablePropsVariableDeclaration = () => {
     const variableDeclaration = t.variableDeclaration("const", [
         t.variableDeclarator(
-            t.identifier("overridableProps"),
+            t.identifier(OVERRIDABLE_PROPS_VAR),
             t.conditionalExpression(
                 t.binaryExpression(
                     "!==",
@@ -66,7 +69,7 @@ const updateOverridablePropsAndComponents = (path, componentName) => {
     );
     if (!overridableComponentsVariableDeclaration) {
         overridableComponentsVariableDeclaration = t.variableDeclaration("const", [
-            t.variableDeclarator(t.identifier("overridableComponents"), t.objectExpression([]))
+            t.variableDeclarator(t.identifier(OVERRIDABLE_COMPONENTS_VAR), t.objectExpression([]))
         ]);
         overridableComponentsVariableDeclaration.isOverridableComponentsVariableDeclaration = true;
         blockStatement.body.splice(blockStatement.body.length - 1, 0, overridableComponentsVariableDeclaration);
@@ -107,7 +110,7 @@ export default declare((api, options, dirname) => {
             : openingElement.name.name;
 
         const propsMemberExpression = generateSafetyMemberExpression([
-            "overridableProps",
+            OVERRIDABLE_PROPS_VAR,
             "overrides",
             ComponentName,
             "props"
@@ -117,7 +120,7 @@ export default declare((api, options, dirname) => {
         updateOverridablePropsAndComponents(path, ComponentName);
 
         const ComponentNameReplacement = t.jsxMemberExpression(
-            t.jsxIdentifier("overridableComponents"),
+            t.jsxIdentifier(OVERRIDABLE_COMPONENTS_VAR),
             t.jsxIdentifier(ComponentName)
         );
         openingElement.name = ComponentNameReplacement;
