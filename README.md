@@ -85,6 +85,28 @@ const FancyGridSelect = (props) => {
 }
 ```
 
+#### Access to individual props
+
+```javascript
+import React from "react";
+import o from "react-overrides";
+import c from "classnames";
+import "./button.scss";
+
+const Button = props => {
+    const Container = (props) => <button {...props) />;
+    const Text = (props) => <span {...props) />;
+    
+    return (
+        <Container {...o} className={c("button", o.className)} onClick={props.onClick}>
+            <Text className={c("button__text", o.className)} />
+                {props.children}
+            </Text>
+        </Input>
+    );
+};
+```
+
 #### How it works
 `babel-plugin-react-overrides` transforms the code from the example into this:
 ```javascript
