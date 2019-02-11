@@ -1,7 +1,81 @@
 import { declare } from "@babel/helper-plugin-utils";
 import { generateSafetyMemberExpression } from "./memberExpressionGenerator";
-import { findParent } from "./findParent";
+import { findHighestParent, findParent } from "./findParent";
 const t = require("@babel/types");
+
+const generateOverridablePropsVariableDeclaration = () => {
+    const variableDeclaration = t.variableDeclaration("const", [
+        t.variableDeclarator(
+            t.identifier("overridableProps"),
+            t.conditionalExpression(
+                t.binaryExpression(
+                    "!==",
+                    t.unaryExpression("typeof", t.identifier("props"), true),
+                    t.stringLiteral("undefined")
+                ),
+                t.identifier("props"),
+                t.conditionalExpression(
+                    t.logicalExpression(
+                        "&&",
+                        t.thisExpression(),
+                        t.binaryExpression(
+                            "!==",
+                            t.unaryExpression(
+                                "typeof",
+                                t.memberExpression(t.thisExpression(), t.identifier("props")),
+                                true
+                            ),
+                            t.stringLiteral("undefined")
+                        )
+                    ),
+                    t.memberExpression(t.thisExpression(), t.identifier("props")),
+                    t.memberExpression(t.identifier("arguments"), t.numericLiteral(0), true)
+                )
+            )
+        )
+    ]);
+    variableDeclaration.isOverridablePropsVariableDeclaration = true;
+    return variableDeclaration;
+};
+
+const updateOverridablePropsAndComponents = (path, componentName) => {
+    const arrowFunctionExpression = findHighestParent(path, path => t.isArrowFunctionExpression(path));
+    if (!t.isBlockStatement(arrowFunctionExpression.node.body)) {
+        arrowFunctionExpression.node.body = t.blockStatement([t.returnStatement(arrowFunctionExpression.node.body)]);
+    }
+    const blockStatement = arrowFunctionExpression.node.body;
+    const overridablePropsVariableDeclaration = blockStatement.body.find(
+        expression => expression.isOverridablePropsVariableDeclaration
+    );
+    if (!overridablePropsVariableDeclaration) {
+        blockStatement.body.splice(blockStatement.body.length - 1, 0, generateOverridablePropsVariableDeclaration());
+    }
+    let overridableComponentsVariableDeclaration = blockStatement.body.find(
+        expression => expression.isOverridableComponentsVariableDeclaration
+    );
+    if (!overridableComponentsVariableDeclaration) {
+        overridableComponentsVariableDeclaration = t.variableDeclaration("const", [
+            t.variableDeclarator(t.identifier("overridableComponents"), t.objectExpression([]))
+        ]);
+        overridableComponentsVariableDeclaration.isOverridableComponentsVariableDeclaration = true;
+        blockStatement.body.splice(blockStatement.body.length - 1, 0, overridableComponentsVariableDeclaration);
+    }
+    const classProperties = overridableComponentsVariableDeclaration.declarations[0].init.properties;
+    const overridedClass = overridableComponentsVariableDeclaration.declarations[0].init.properties.find(
+        property => property.key.name === componentName
+    );
+    if (!overridedClass) {
+        classProperties.push(
+            t.objectProperty(
+                t.identifier(componentName),
+                generateSafetyMemberExpression(
+                    ["props", "overrides", componentName, "component"],
+                    t.identifier(componentName)
+                )
+            )
+        );
+    }
+};
 
 export default declare((api, options, dirname) => {
     api.assertVersion(7);
@@ -41,49 +115,28 @@ export default declare((api, options, dirname) => {
                     return;
                 }
                 const openingElement = jsxElement.node.openingElement;
-                const ComponentName = openingElement.name.name;
+                const ComponentName = t.isJSXMemberExpression(openingElement.name)
+                    ? openingElement.name.property.name
+                    : openingElement.name.name;
 
                 const propsMemberExpression = generateSafetyMemberExpression([
-                    "props",
+                    "overridableProps",
                     "overrides",
                     ComponentName,
                     "props"
                 ]);
                 path.replaceWith(propsMemberExpression);
 
-                const arrowFunctionExpression = findParent(path, path => t.isArrowFunctionExpression(path));
-                if (!t.isBlockStatement(arrowFunctionExpression.node.body)) {
-                    arrowFunctionExpression.node.body = t.blockStatement([
-                        t.returnStatement(arrowFunctionExpression.node.body)
-                    ]);
-                }
-                const blockStatement = arrowFunctionExpression.node.body;
-                const componentMemberExpression = generateSafetyMemberExpression(
-                    ["props", "overrides", ComponentName, "component"],
-                    t.identifier(ComponentName)
+                updateOverridablePropsAndComponents(path, ComponentName);
+
+                const ComponentNameReplacement = t.jsxMemberExpression(
+                    t.jsxIdentifier("overridableComponents"),
+                    t.jsxIdentifier(ComponentName)
                 );
-                const ComponentNameReplacement = ComponentName + "OverridesReplacement";
-                openingElement.name.name = ComponentNameReplacement;
+                openingElement.name = ComponentNameReplacement;
                 if (jsxElement.node.closingElement) {
-                    jsxElement.node.closingElement.name.name = ComponentNameReplacement;
+                    jsxElement.node.closingElement.name = ComponentNameReplacement;
                 }
-                const componentReplacementVariableDeclaration = t.variableDeclaration("var", [
-                    t.variableDeclarator(t.identifier(ComponentNameReplacement), componentMemberExpression)
-                ]);
-                const componentReplacementVariableCondition = t.binaryExpression(
-                    "===",
-                    t.unaryExpression("typeof", t.identifier(ComponentNameReplacement), true),
-                    t.stringLiteral("undefined")
-                );
-                const componentReplacementVariableDeclarationWithCheck = t.ifStatement(
-                    componentReplacementVariableCondition,
-                    componentReplacementVariableDeclaration
-                );
-                blockStatement.body.splice(
-                    blockStatement.body.length - 1,
-                    0,
-                    componentReplacementVariableDeclarationWithCheck
-                );
             }
         }
     };

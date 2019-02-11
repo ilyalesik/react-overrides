@@ -19,7 +19,11 @@
     "moduleNameMapper": {
       "\\.(svg|png)$": "<rootDir>/__mocks__/fileMock.js"
     },
-    "testPathIgnorePatterns": ["<rootDir>/build/", "<rootDir>/node_modules/", "<rootDir>/plugin/"]
+    "testPathIgnorePatterns": [
+      "<rootDir>/build/",
+      "<rootDir>/node_modules/",
+      "<rootDir>/plugin/"
+    ]
   },
   "files": [
     "dist",

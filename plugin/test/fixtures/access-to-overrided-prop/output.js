@@ -1,9 +1,11 @@
 import React from "react";
 
 const Comp = props => {
-  if (typeof Comp1OverridesReplacement === "undefined") var Comp1OverridesReplacement = typeof props !== "undefined" && props.overrides && props.overrides.Comp1 && props.overrides.Comp1.component || Comp1;
-  if (typeof Comp1OverridesReplacementOverridesReplacement === "undefined") var Comp1OverridesReplacementOverridesReplacement = typeof props !== "undefined" && props.overrides && props.overrides.Comp1OverridesReplacement && props.overrides.Comp1OverridesReplacement.component || Comp1OverridesReplacement;
+  const overridableProps = typeof props !== "undefined" ? props : this && typeof this.props !== "undefined" ? this.props : arguments[0];
+  const overridableComponents = {
+    Comp1: typeof props !== "undefined" && props.overrides && props.overrides.Comp1 && props.overrides.Comp1.component || Comp1
+  };
   return <div>
-            <Comp1OverridesReplacementOverridesReplacement {...typeof props !== "undefined" && props.overrides && props.overrides.Comp1 && props.overrides.Comp1.props || {}} className={"comp1 " + (typeof props !== "undefined" && props.overrides && props.overrides.Comp1OverridesReplacement && props.overrides.Comp1OverridesReplacement.props || {}).className} />
+            <overridableComponents.Comp1 {...typeof overridableProps !== "undefined" && overridableProps.overrides && overridableProps.overrides.Comp1 && overridableProps.overrides.Comp1.props || {}} className={"comp1 " + (typeof overridableProps !== "undefined" && overridableProps.overrides && overridableProps.overrides.Comp1 && overridableProps.overrides.Comp1.props || {}).className} />
         </div>;
 };

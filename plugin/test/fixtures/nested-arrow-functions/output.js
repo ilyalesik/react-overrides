@@ -1,11 +1,12 @@
 import React from "react";
 
 const Select = props => {
-  if (typeof ContainerOverridesReplacement === "undefined") var ContainerOverridesReplacement = typeof props !== "undefined" && props.overrides && props.overrides.Container && props.overrides.Container.component || Container;
-  return <ContainerOverridesReplacement {...typeof props !== "undefined" && props.overrides && props.overrides.Container && props.overrides.Container.props || {}}>
-            {props.options.map((option, key) => {
-      if (typeof OptionOverridesReplacement === "undefined") var OptionOverridesReplacement = typeof props !== "undefined" && props.overrides && props.overrides.Option && props.overrides.Option.component || Option;
-      return <OptionOverridesReplacement {...typeof props !== "undefined" && props.overrides && props.overrides.Option && props.overrides.Option.props || {}} key={key} title={option.title} />;
-    })}
-        </ContainerOverridesReplacement>;
+  const overridableProps = typeof props !== "undefined" ? props : this && typeof this.props !== "undefined" ? this.props : arguments[0];
+  const overridableComponents = {
+    Container: typeof props !== "undefined" && props.overrides && props.overrides.Container && props.overrides.Container.component || Container,
+    Option: typeof props !== "undefined" && props.overrides && props.overrides.Option && props.overrides.Option.component || Option
+  };
+  return <overridableComponents.Container {...typeof overridableProps !== "undefined" && overridableProps.overrides && overridableProps.overrides.Container && overridableProps.overrides.Container.props || {}}>
+            {props.options.map((option, key) => <overridableComponents.Option {...typeof overridableProps !== "undefined" && overridableProps.overrides && overridableProps.overrides.Option && overridableProps.overrides.Option.props || {}} key={key} title={option.title} />)}
+        </overridableComponents.Container>;
 };
