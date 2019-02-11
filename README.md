@@ -30,7 +30,9 @@ Further, add react-overrides to your .babelrc configuration:
 ## Usage
 
 Create a reusable component by passing the default export 
-from `react-overrides` package to the component to be extended:
+from `react-overrides` package to the component to be extended. 
+
+*Example*:
 
 ```javascript
 import React, {useState} from "react";
@@ -83,7 +85,7 @@ const FancyGridSelect = (props) => {
 }
 ```
 
-#### How it worked
+#### How it works
 `babel-plugin-react-overrides` transforms the code from the example into this:
 ```javascript
 import React, { useState } from "react";
