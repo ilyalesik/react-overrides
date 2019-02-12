@@ -38,7 +38,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lm-a/react-overrides.git"
+    "url": "git+https://github.com/ilyalesik/react-overrides.git"
   },
   "keywords": [
     "react",
@@ -48,9 +48,9 @@
   "author": "Ilya Lesik",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/lessmess-agency/react-overrides/issues"
+    "url": "https://github.com/ilyalesik/react-overrides/issues"
   },
-  "homepage": "https://github.com/lessmess-agency/react-overrides#readme",
+  "homepage": "https://github.com/ilyalesik/react-overrides#readme",
   "peerDependencies": {
     "react": ">=16.6.0"
   },
