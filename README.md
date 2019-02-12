@@ -1,5 +1,6 @@
 # react-overrides
-Helper to create reusable components.
+Helper for create extendable components. 
+Intended to override the props and used components of the internal elements of the component.
 
 Inspired by article 
 [Better Reusable React Components with the Overrides Pattern](https://medium.com/@dschnr/better-reusable-react-components-with-the-overrides-pattern-9eca2339f646).
@@ -20,7 +21,7 @@ npm i react-overrides --save
 npm i babel-plugin-react-overrides --save-dev
 ```
 
-Further, add react-overrides to your .babelrc configuration:
+Further, add `react-overrides` to your `.babelrc` configuration:
 ```json
 {
   "plugins": ["react-overrides"]
@@ -29,8 +30,10 @@ Further, add react-overrides to your .babelrc configuration:
 
 ## Usage
 
-Create a reusable component by passing the default export 
-from `react-overrides` package to the component to be extended:
+Create extendable component by passing the default export 
+from `react-overrides` package to the component to be extended. 
+
+*Example*:
 
 ```javascript
 import React, {useState} from "react";
@@ -83,7 +86,29 @@ const FancyGridSelect = (props) => {
 }
 ```
 
-#### How it worked
+#### Access to individual props
+
+```javascript
+import React from "react";
+import o from "react-overrides";
+import c from "classnames";
+import "./button.scss";
+
+const Button = props => {
+    const Container = (props) => <button {...props) />;
+    const Text = (props) => <span {...props) />;
+    
+    return (
+        <Container {...o} className={c("button", o.className)} onClick={props.onClick}>
+            <Text className={c("button__text", o.className)} />
+                {props.children}
+            </Text>
+        </Input>
+    );
+};
+```
+
+## How it works
 `babel-plugin-react-overrides` transforms the code from the example into this:
 ```javascript
 import React, { useState } from "react";
@@ -114,7 +139,7 @@ export const Select = props => {
 ```
 
 
-#### Usage without babel plugin
+### Usage without babel plugin
 
 Create reusable component with *getComponents*: 
 ```javascript
