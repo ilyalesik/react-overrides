@@ -24,7 +24,7 @@ npm i babel-plugin-react-overrides --save-dev
 Further, add `react-overrides` to your `.babelrc` configuration:
 ```json
 {
-  "plugins": ["react-overrides"]
+  "plugins": ["babel-plugin-react-overrides"]
 }
 ```
 
