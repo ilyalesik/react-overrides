@@ -136,3 +136,37 @@ const NewOptionWrong = (props: { b: number }) => {
 
 
 const OverridedNewComponentWrong = () => <Select11 overrides={{ Option11: {component: NewOptionWrong}}} />;
+
+/**
+ * $ExpectError
+ * prettier-ignore
+ * Pass incompatible component
+ */
+const Option22 = (props: { a: 1 | 2, b: string }) => {
+    return <div>{props.b + 2 * props.a}</div>;
+};
+
+const Container22 = (props: { children?: React.Node }) => {
+    return <div>{props.children}</div>;
+};
+
+const OverridableProps22 = {
+    Option22,
+    Container22
+};
+type TOverridesProps22 = ExtractOverridesProps<typeof OverridableProps22>;
+
+const Select22 = (props: { overrides: TOverridesProps22 }) => {
+    return (
+        <Container>
+            <Option a={1} b={"x"} />
+        </Container>
+    );
+};
+
+const NewOptionWrongExtra = (props: { a: 1 | 2, b: string, c: string }) => {
+    return <div>{"new" + props.b}</div>;
+};
+
+
+const OverridedNewComponentWrongExtra = () => <Select22 overrides={{ Option22: {component: NewOptionWrong}}} />;
