@@ -1,9 +1,6 @@
 // @flow
 import * as React from "react";
-
-export type TOverridesType<T> = {
-    [T]: { component?: React.ComponentType<any>, style?: { [string]: string }, props?: { [string]: mixed } }
-};
+import type { TOverridesType } from "./TOverridesType";
 
 export function getComponents<T>(
     defaultComponents: { [T]: React.ComponentType<any> },
