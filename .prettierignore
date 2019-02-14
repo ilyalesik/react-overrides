@@ -3,3 +3,4 @@ dist/
 node_modules/
 flow-typed/
 fixtures/
+__flow__/
