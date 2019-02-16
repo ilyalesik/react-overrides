@@ -1,7 +1,7 @@
 // @flow
 
 export { getComponents } from "./getComponents";
-export type { TOverridesType } from "./TOverridesType";
+export type { ExtractOverridesProps } from "./ExtractOverridesProps";
 
 type TOObject = {
     [string]: any
