@@ -7,14 +7,12 @@ export const PrimaryButton = props => (
     overrides={{
       Container: {
         props: {
-          className: "primary_button__container",
-          "aria-role": "button"
+          className: "primary_button__container", // pass className prop to Container element of CommonButton
+          "aria-role": "button" // pass ARIA attribute
         }
       },
       Text: {
-        props: {
-          className: "primary_button__text"
-        }
+        component: BigText // replace element component to BigText
       }
     }}
   />
@@ -36,7 +34,11 @@ Try at CodeSandbox:
 
 [![Edit react-overrides](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/n8m65940l)
 
+## Why
 
+There is a need for pass props to elements, or replace his component. Here's some examples:
+* You create UI library, and want to provide customization abilities for components. [Base UI](https://baseui.design/) library used this approach.
+* You need unified way to pass any props (for example, ARIA attributes) to common component elements. 
 
 ## Installation
 
