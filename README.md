@@ -1,16 +1,24 @@
 # react-overrides
 Pass props to internal elements of React component by passing `overrides` prop. 
 ```javascript
-const BigOptionSelect = (props) => {
-    return <Select {...props} overrides={{
-        Option: {
-            props: {
-                className: "big-option-select__option",
-                "aria-role": "button"
-            }
+export const PrimaryButton = props => (
+  <CommonButton
+    {...props}
+    overrides={{
+      Container: {
+        props: {
+          className: "primary_button__container",
+          "aria-role": "button"
         }
-    }} />
-}
+      },
+      Text: {
+        props: {
+          className: "primary_button__text"
+        }
+      }
+    }}
+  />
+);
 ```
 
 Try at CodeSandbox:
