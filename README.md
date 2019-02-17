@@ -1,4 +1,4 @@
-# react-overrides
+# 🔮 react-overrides
 Pass props to internal elements of React component by passing `overrides` prop. 
 ```javascript
 export const PrimaryButton = props => (
