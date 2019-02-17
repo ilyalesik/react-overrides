@@ -20,6 +20,17 @@ export const PrimaryButton = props => (
   />
 );
 ```
+Where `CommonButton` was made with `react-overrides`:
+```javascript
+import o from "react-overrides";
+
+export const CommonButton = props => (
+    <Container {...o} onClick={props.onClick}>
+        <Text {...o}>{props.children}</Text>
+    </Container>
+);
+```
+
 
 Try at CodeSandbox:
 
