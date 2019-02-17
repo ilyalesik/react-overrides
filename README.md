@@ -145,7 +145,7 @@ const Button = props => {
 
 #### Flow support
 You can use `ExtractOverrides` type props helper for infer overrides prop type from components types.
-```
+```javascript
 // @flow
 import * as React from "react";
 import o, { type ExtractOverridesProps } from "react-overrides";
