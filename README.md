@@ -17,8 +17,7 @@ Try at CodeSandbox:
 
 [![Edit react-overrides](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/n8m65940l)
 
-Inspired by article 
-[Better Reusable React Components with the Overrides Pattern](https://medium.com/@dschnr/better-reusable-react-components-with-the-overrides-pattern-9eca2339f646).
+
 
 ## Installation
 
@@ -122,3 +121,7 @@ const Button = props => {
     );
 };
 ```
+
+# Acknowledgements
+This library inspired by article 
+[Better Reusable React Components with the Overrides Pattern](https://medium.com/@dschnr/better-reusable-react-components-with-the-overrides-pattern-9eca2339f646).
