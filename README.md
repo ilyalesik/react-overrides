@@ -104,6 +104,8 @@ const BigOptionSelect = (props) => {
 }
 ```
 
+#### Replace internal components
+
 You can replace the internal component with a custom one:
 ```javascript
 import React from "react";
