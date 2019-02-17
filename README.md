@@ -143,6 +143,65 @@ const Button = props => {
 };
 ```
 
+#### Flow support
+You can use `ExtractOverrides` type props helper for infer overrides prop type from components types.
+```
+// @flow
+import * as React from "react";
+import o, { type ExtractOverridesProps } from "react-overrides";
+
+const Option = (props: { a: 1 | 2, b: string }) => {
+    return <div>{props.b + 2 * props.a}</div>;
+};
+
+const Container = (props: { children?: React.Node }) => {
+    return <div>{props.children}</div>;
+};
+
+const OverridableProps = {
+    Option,
+    Container
+};
+type TOverridesProps = ExtractOverridesProps<typeof OverridableProps>;
+
+const Select = (props: { overrides: TOverridesProps }) => {
+    return (
+        <Container {...o}>
+            <Option {...o} a={1} b={"x"} />
+        </Container>
+    );
+};
+
+const OverridedSelect = () => {
+    return (
+        <Select
+            overrides={{
+                Option: {
+                    props: {
+                        a: 1,
+                    }
+                }
+            }}
+        />
+    );
+};
+
+// throw flow error:
+const OverridedSelectWrong = () => {
+    return (
+        <Select
+            overrides={{
+                Option: {
+                    props: {
+                        a: 3
+                    }
+                }
+            }}
+        />
+    );
+};
+```
+
 # Acknowledgements
 This library inspired by article 
 [Better Reusable React Components with the Overrides Pattern](https://medium.com/@dschnr/better-reusable-react-components-with-the-overrides-pattern-9eca2339f646).
