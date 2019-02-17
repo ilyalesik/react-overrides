@@ -7,7 +7,7 @@ export const PrimaryButton = props => (
     overrides={{
       Container: {
         props: {
-          className: "primary_button__container", // pass className prop to Container element of CommonButton
+          className: "primary_button__container", // pass className to Container element of CommonButton
           "aria-role": "button" // pass ARIA attribute
         }
       },
