@@ -1,6 +1,6 @@
 // @flow
 import * as React from "react";
-import type { ExtractOverridesProps } from "../ExtractOverridesProps";
+import o, { type ExtractOverridesProps } from "../ExtractOverridesProps";
 
 const Option = (props: { a: 1 | 2, b: string }) => {
     return <div>{props.b + 2 * props.a}</div>;
@@ -18,11 +18,17 @@ type TOverridesProps = ExtractOverridesProps<typeof OverridableProps>;
 
 const Select = (props: { overrides: TOverridesProps }) => {
     return (
-        <Container>
-            <Option a={1} b={"x"} />
+        <Container {...o}>
+            <Option {...o} a={1} b={"x"} />
         </Container>
     );
 };
+
+/**
+ * $ExpectError
+ * Pass prop wrong prop value
+ */
+const SelectWrongProp = (props: { overrides: TOverridesProps }) => <Option {...o} a={3} b={"x"} />;
 
 const OverridedSelect = () => {
     return (
