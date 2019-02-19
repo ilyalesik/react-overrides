@@ -46,6 +46,8 @@ There is a need for pass props to elements, or replace his component. Here's som
 * You create UI library, and want to provide customization abilities for components. [Base UI](https://baseui.design/) library used this approach.
 * You need unified way to pass any props (for example, ARIA attributes) to common component elements. 
 
+This library provides a convenient way to create overridable (extendable) components.
+
 ## Installation
 
 Install core package and babel plugin with yarn:
