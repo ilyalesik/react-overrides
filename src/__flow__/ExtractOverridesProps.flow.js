@@ -19,7 +19,7 @@ type TOverridesProps = ExtractOverridesProps<typeof OverridableProps>;
 const Select = (props: { overrides: TOverridesProps }) => {
     return (
         <Container {...o}>
-            <Option {...o} a={1} b={"x"} />
+            <Option {...o} a={1} b={o().b || "x"} />
         </Container>
     );
 };

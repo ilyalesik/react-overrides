@@ -174,7 +174,8 @@ type TOverridesProps = ExtractOverridesProps<typeof OverridableProps>;
 const Select = (props: { overrides: TOverridesProps }) => {
     return (
         <Container {...o}>
-            <Option {...o} a={1} b={"x"} />
+            {/* For access to individual prop used o().<prop>, o.<prop> throw Flow error */}
+            <Option {...o} a={1} b={o().b || "x"} />
         </Container>
     );
 };

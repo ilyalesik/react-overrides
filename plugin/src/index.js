@@ -127,6 +127,10 @@ export default declare((api, options, dirname) => {
         if (jsxElement.node.closingElement) {
             jsxElement.node.closingElement.name = ComponentNameReplacement;
         }
+
+        if (t.isCallExpression(path.parentPath)) {
+            path.parentPath.replaceWith(propsMemberExpression);
+        }
     };
 
     return {

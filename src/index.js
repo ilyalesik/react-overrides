@@ -3,7 +3,11 @@
 export { getComponents } from "./getComponents";
 export type { ExtractOverridesProps } from "./ExtractOverridesProps";
 
-type TOObject = {||};
-const oObject: TOObject = Object.freeze({});
+type TOObject = {
+    (): { [string]: any }
+};
+function returnObject() {
+    return {};
+}
 
-export default oObject;
+export default (returnObject: TOObject);
