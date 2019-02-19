@@ -12,13 +12,13 @@ export const LinkButton = props => (
     overrides={{
       Container: {
         props: {
-          as: "a",
-          href: props.href,
-          className: "link_button__container", // pass className to Container element of CommonButton
+          as: "a", // say the component to display itself as <a> tag. Typical for CSS-in-JS solutions.
+          href: props.href, // add href attribute to element
+          className: "link_button__container", // pass additional className to component
         }
       },
       Text: {
-        component: LinkText // replace element component to BigText
+        component: LinkText // replace element component to LinkText
       }
     }}
   />
