@@ -1,6 +1,6 @@
 // @flow
 import * as React from "react";
-import o, { type ExtractOverridesProps } from "../ExtractOverridesProps";
+import o, { type ExtractOverridesProps } from "..";
 
 const Option = (props: { a: 1 | 2, b: string }) => {
     return <div>{props.b + 2 * props.a}</div>;
