@@ -6,18 +6,19 @@
 
 Pass props to internal elements of React component by passing `overrides` prop. 
 ```javascript
-export const PrimaryButton = props => (
+export const LinkButton = props => (
   <CommonButton
     {...props}
     overrides={{
       Container: {
         props: {
-          className: "primary_button__container", // pass className to Container element of CommonButton
-          "aria-role": "button" // pass ARIA attribute
+          as: "a",
+          href: props.href,
+          className: "link_button__container", // pass className to Container element of CommonButton
         }
       },
       Text: {
-        component: BigText // replace element component to BigText
+        component: LinkText // replace element component to BigText
       }
     }}
   />
