@@ -4,27 +4,7 @@
 [![npm version](https://img.shields.io/npm/v/react-overrides.svg)](https://www.npmjs.com/package/react-overrides)
 [![npm downloads](https://img.shields.io/npm/dt/react-overrides.svg)](https://www.npmjs.com/package/react-overrides)
 
-Pass props to internal elements of React component by passing `overrides` prop. 
-```javascript
-export const LinkButton = props => (
-  <CommonButton
-    {...props}
-    overrides={{
-      Container: {
-        props: {
-          as: "a", // say the component to display itself as <a> tag. Typical for CSS-in-JS solutions.
-          href: props.href, // add href attribute to element
-          className: "link_button__container", // pass additional className to component
-        }
-      },
-      Text: {
-        component: LinkText // replace element component to LinkText
-      }
-    }}
-  />
-);
-```
-Where `CommonButton` was made with `react-overrides`:
+Let's create `CommonButton` component with `react-overrides`:
 ```javascript
 import o from "react-overrides";
 
@@ -35,18 +15,52 @@ export const CommonButton = props => (
 );
 ```
 
+Next, we can pass props to internal elements of `CommonButton` by passing `overrides` prop:
+```javascript
+export const LinkButton = props => (
+  <CommonButton
+    {...props}
+    overrides={{
+      Container: { // 'Container' element of CommonButton
+        props: {
+          as: "a", // say the component to display itself as <a> tag. Typical for CSS-in-JS solutions.
+          href: props.href, // add href attribute to element
+          className: "link_button__container" // pass additional className to component
+        }
+      }
+    }}
+  />
+);
+```
+So we extend the `CommonButton` by creating a `LinkButton` that has *link* behavior.
 
 Try at CodeSandbox:
 
 [![Edit react-overrides](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/n8m65940l)
 
-## Why
 
-There is a need for pass props to elements, or replace his component. Here's some examples:
-* You create UI library, and want to provide customization abilities for components. [Base UI](https://baseui.design/) library used this approach.
-* You need unified way to pass any props (for example, ARIA attributes) to common component elements. 
+It is also possible to replace the entire component:
+```javascript
+export const LinkButton = props => (
+  <CommonButton
+    {...props}
+    overrides={{
+      Text: {
+          component: BigText
+      }
+    }}
+  />
+);
+```
 
-This library provides a convenient way to create overridable (extendable) components.
+
+## Motivation
+
+There is a need for pass props directly to elements, or replace his component. 
+Here's some examples of when you need it:
+* You create UI library, and want to provide wide customization abilities for components. [Base UI](https://baseui.design/) library used this approach.
+* You need *unified* way to pass any props (for example, ARIA attributes) to elements of components. 
+* Your components can have many internal elements and it can be inconvenient to add a prop to component every time you just need to forward the prop to an internal element.
 
 ## Installation
 
