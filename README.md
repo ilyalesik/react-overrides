@@ -24,8 +24,7 @@ export const LinkButton = props => (
       Container: { // 'Container' element of CommonButton
         props: {
           as: "a", // say the component to display itself as <a> tag. Typical for CSS-in-JS solutions.
-          href: props.href, // add href attribute to element
-          className: "link_button__container" // pass additional className to component
+          href: props.href // add href attribute to element
         }
       }
     }}
