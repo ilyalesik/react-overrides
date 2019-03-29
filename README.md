@@ -1,4 +1,4 @@
-# 🔮 react-overrides
+# react-overrides
 
 [![Build Status](https://travis-ci.org/ilyalesik/react-overrides.svg?branch=master)](https://travis-ci.org/ilyalesik/react-overrides)
 [![npm version](https://img.shields.io/npm/v/react-overrides.svg)](https://www.npmjs.com/package/react-overrides)
