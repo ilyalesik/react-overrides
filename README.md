@@ -52,6 +52,11 @@ export const LinkButton = props => (
 );
 ```
 
+<a href="https://lessmess.agency/?utm_source=react-overrides">
+  <img src="https://lessmess.agency/badges/sponsored_by_lessmess.svg"
+       alt="Sponsored by Lessmess" width="236" height="54">
+</a>
+
 
 ## Motivation
 
